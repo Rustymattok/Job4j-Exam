@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, Petr Arsentev!" />
+        android:text="@string/hello" />
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -50,14 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Назад" />
+            android:text="@string/back" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Далее" />
+            android:text="@string/next" />
     </LinearLayout>
 
 </LinearLayout>
