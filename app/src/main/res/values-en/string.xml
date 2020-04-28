@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Job4j Exam</string>
+    <string name="domain_prompt">Choose area</string>
+    <string name="exp_date">Date of test</string>
+    <string name="hello">Hello</string>
+    <string-array name="domain_arrays">
+        <item>Choose area</item>
+        <item>Moscow area</item>
+        <item>Spb</item>
+    </string-array>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="city">City</string>
+    <string name="nameObject">Name object</string>
+    <string name="address">Street and hous</string>
+    <string name="contact">Contact customer</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Atmospheric pressure</string>
+    <string name="number">Number off bill</string>
+</resources>
