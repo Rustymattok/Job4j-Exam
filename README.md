@@ -18,4 +18,4 @@ soon pictures of application will appear
 # Targets
 Education tasks for Android.
 # Stack of technologies
-see you soon
+see you soond
