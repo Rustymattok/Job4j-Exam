@@ -56,27 +56,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"onCreate");
         this.fillForm();
         Button next = findViewById(R.id.next);
-        next.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(showAnswer()){
-                            position++;
-                            fillForm();
-                        }
-                    }
-                }
-        );
+        next.setOnClickListener(this::nextBtn);
         Button previous = findViewById(R.id.back);
-        previous.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        position--;
-                        fillForm();
-                    }
-                }
-        );
+        previous.setOnClickListener(this::previousBtn);
     }
 
     @Override
@@ -149,5 +131,17 @@ public class MainActivity extends AppCompatActivity {
             ).show();
         }
         return flag;
+    }
+
+    private void nextBtn(View view) {
+        if(showAnswer()){
+            position++;
+            fillForm();
+        }
+    }
+
+    private void previousBtn(View view) {
+            position--;
+            fillForm();
     }
 }
