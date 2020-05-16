@@ -1,5 +1,6 @@
 package ru.job4j.store;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import ru.job4j.model.Option;
 import ru.job4j.model.Question;
 
-public final class QuestionStore {
+public final class QuestionStore  {
     private List<Question> questions = new ArrayList<Question>();
 
     private static final QuestionStore INST = new QuestionStore();
