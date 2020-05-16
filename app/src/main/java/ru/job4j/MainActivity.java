@@ -1,4 +1,5 @@
 package ru.job4j;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,17 +11,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import ru.job4j.model.Option;
 import ru.job4j.model.Question;
 import ru.job4j.store.QuestionStore;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String HINT_FOR = "hint_for";
     private static final String TAG = "MainActivity";
     private  static int value = 0;
     private int position = 0;
-    private List<Integer> answers  = new ArrayList<>();
+    private ArrayList<Integer> answers  = new ArrayList<>();
     private final QuestionStore questions = QuestionStore.getInstance();
 
 
@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            int i = savedInstanceState.getInt("number");
-            Log.d(TAG,"onCreate new Data " + i);
+            position = savedInstanceState.getInt("position");
+            answers = (ArrayList<Integer>) savedInstanceState.getSerializable("answers");
+            Log.d(TAG,"onCreate answer rotate: " + answers);
+
         }
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate");
@@ -38,20 +40,33 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(this::nextBtn);
         Button previous = findViewById(R.id.back);
         previous.setOnClickListener(this::previousBtn);
+        Button hint = findViewById(R.id.hint);
+        hint.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, HintActivity.class);
+                        intent.putExtra(HINT_FOR,position);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG,"onStart");
+        if (answers.size() > 2){
+            answers.remove(answers.size() - 1);
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        value = value + 1;
-        outState.putInt("number",value);
+        outState.putInt("position",position);
+        outState.putSerializable("answers",answers);
         super.onSaveInstanceState(outState);
-        Log.d(TAG,"save Instance : " + value);
     }
 
     @Override
@@ -64,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy:");
-        for (Integer number : answers) {
-            Log.d(TAG,"Added answers: " + number);
-        }
     }
 
     @Override
@@ -79,11 +91,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG,"onResume");
+        Log.d(TAG,"position done on Resume" + position);
     }
 
     private void fillForm() {
         findViewById(R.id.back).setEnabled(position != 0);
-        findViewById(R.id.next).setEnabled(position != questions.size() - 1);
+        if(position >=2 ){
+            findViewById(R.id.next).setEnabled(true);
+        }else {
+            findViewById(R.id.next).setEnabled(position != questions.size() - 1);
+        }
         final TextView text = findViewById(R.id.question);
         Question question = this.questions.get(this.position);
         text.setText(question.getText());
@@ -101,26 +118,50 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup variants = findViewById(R.id.variants);
         int id = variants.getCheckedRadioButtonId();
         Question question = this.questions.get(this.position);
+        showToastQuestion(question);
         if(id > 0) {
             answers.add(id);
             flag = true;
-            Toast.makeText(
-                    this, "Your answer is " + id + ", correct is " + question.getAnswer(),
-                    Toast.LENGTH_SHORT
-            ).show();
+            showToastAnswer(id,question);
+        }
+        if(position >=2){
+            position--;
+            Log.d(TAG,"choose answer" + answers.toString());
+            Intent intent = new Intent(MainActivity.this,ResultActivity.class);
+            intent.putExtra("Answers",answers);
+            startActivity(intent);
         }
         return flag;
     }
 
+    public void showToastQuestion(Question question){
+        Toast.makeText(
+                this, "Your answer is " + question.getText(),
+                Toast.LENGTH_LONG
+        ).show();
+    }
+
+    public void showToastAnswer(int id,Question question){
+        Toast.makeText(
+                this, "Your answer is " + id + ", correct is " + question.getAnswer(),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
     private void nextBtn(View view) {
-        if(showAnswer()){
-            position++;
-            fillForm();
-        }
+            if(showAnswer()){
+                position++;
+                fillForm();
+            }
+        Log.d(TAG,"position done next" + position);
     }
 
     private void previousBtn(View view) {
             position--;
+            if(answers.size() > 0){
+                answers.remove(answers.size()-1);
+            }
             fillForm();
+        Log.d(TAG,"position done back" + position);
     }
 }
