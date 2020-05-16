@@ -19,4 +19,6 @@
     <string name="humidity">Humidity</string>
     <string name="pressure">Atmospheric pressure</string>
     <string name="number">Number off bill</string>
+    <string name="help">Information</string>
+    <string name="textview">TextView</string>
 </resources>

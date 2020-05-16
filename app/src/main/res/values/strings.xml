@@ -18,5 +18,7 @@
     <string name="humidity">Влажность воздуха</string>
     <string name="pressure">Атмосферное давление</string>
     <string name="number">Номер отчета</string>
+    <string name="help">Подсказка</string>
+    <string name="textview">TextView</string>
 </resources>
 
