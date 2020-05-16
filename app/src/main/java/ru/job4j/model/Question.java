@@ -1,8 +1,9 @@
 package ru.job4j.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Question {
+public class Question implements Serializable {
     private int id;
     private String text;
     private List<Option> options;
